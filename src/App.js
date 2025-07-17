@@ -30,7 +30,7 @@ const App = () => { // Renamed MarketingWorldCup to App for default export
     {
       id: 4,
       title: "퇴근 전 설정한 광고, 휴가 중엔 어떻게 돼가나 걱정",
-      description: "저 광고 잘 돌아가고 있을까... 계속 신경 쓰여 🤔",
+      description: "저 광고 잘 돌아가고 있을까... 계속 신경 쓰여 �",
       icon: <Target className="w-8 h-8" />,
       color: "bg-purple-500",
       adrielSolution: "오토메이션 기능 → 캠페인 성과나 특정 조건에 따라 자동 알림 or 이메일 보고서를 설정하면, 아무 걱정 없이 휴가 보내도 돼요."
@@ -84,8 +84,8 @@ const App = () => { // Renamed MarketingWorldCup to App for default export
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [healingMessage, setHealingMessage] = useState(''); // State for LLM generated message
-  const [isGeneratingHealingMessage, setIsGeneratingHealingMessage] = useState(false); // Loading state for LLM
+  // const [healingMessage, setHealingMessage] = useState(''); // State for LLM generated message - REMOVED
+  // const [isGeneratingHealingMessage, setIsGeneratingHealingMessage] = useState(false); // Loading state for LLM - REMOVED
 
   // Function to show a custom modal instead of alert
   const showCustomModal = (message) => {
@@ -138,7 +138,7 @@ const App = () => { // Renamed MarketingWorldCup to App for default export
       phone: '',
       budget: ''
     });
-    setHealingMessage(''); // Reset healing message on game reset
+    // setHealingMessage(''); // Reset healing message on game reset - REMOVED
   };
 
   const handleLeadSubmit = async () => {
@@ -183,45 +183,45 @@ const App = () => { // Renamed MarketingWorldCup to App for default export
     setLeadInfo(prev => ({ ...prev, [field]: value }));
   };
 
-  // Function to generate a healing message using Gemini API
-  const generateHealingMessage = async () => {
-    if (!finalWinner) return; // Ensure there's a winner to generate message for
+  // Function to generate a healing message using Gemini API - REMOVED
+  // const generateHealingMessage = async () => {
+  //   if (!finalWinner) return; // Ensure there's a winner to generate message for
 
-    setIsGeneratingHealingMessage(true);
-    setHealingMessage('힐링 메시지 생성 중...'); // Show loading message
+  //   setIsGeneratingHealingMessage(true);
+  //   setHealingMessage('힐링 메시지 생성 중...'); // Show loading message
 
-    const prompt = `You are a compassionate and slightly humorous AI assistant for marketers. A marketer just identified their biggest summer vacation worry: '${finalWinner.title}' - '${finalWinner.description}'. Generate a short (2-3 sentences) encouraging and slightly humorous message for them, acknowledging their struggle and offering a lighthearted perspective or a quick, simple tip for enjoying their vacation despite this worry. Start with a friendly greeting.`;
+  //   const prompt = `You are a compassionate and slightly humorous AI assistant for marketers. A marketer just identified their biggest summer vacation worry: '${finalWinner.title}' - '${finalWinner.description}'. Generate a short (2-3 sentences) encouraging and slightly humorous message for them, acknowledging their struggle and offering a lighthearted perspective or a quick, simple tip for enjoying their vacation despite this worry. Start with a friendly greeting.`;
 
-    try {
-      let chatHistory = [];
-      chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-      const payload = { contents: chatHistory };
-      const apiKey = ""; // Leave as empty string for Canvas to provide
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  //   try {
+  //     let chatHistory = [];
+  //     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+  //     const payload = { contents: chatHistory };
+  //     const apiKey = process.env.REACT_APP_GEMINI_API_KEY || ""; 
+  //     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-      const response = await fetch(apiUrl, {
-                 method: 'POST',
-                 headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify(payload)
-             });
-      const result = await response.json();
+  //     const response = await fetch(apiUrl, {
+  //                method: 'POST',
+  //                headers: { 'Content-Type': 'application/json' },
+  //                body: JSON.stringify(payload)
+  //            });
+  //     const result = await response.json();
 
-      if (result.candidates && result.candidates.length > 0 &&
-          result.candidates[0].content && result.candidates[0].content.parts &&
-          result.candidates[0].content.parts.length > 0) {
-        const text = result.candidates[0].content.parts[0].text;
-        setHealingMessage(text);
-      } else {
-        setHealingMessage('메시지 생성에 실패했습니다. 다시 시도해주세요.');
-        console.error('Gemini API response structure unexpected:', result);
-      }
-    } catch (error) {
-      setHealingMessage('메시지 생성 중 오류가 발생했습니다.');
-      console.error('Error calling Gemini API:', error);
-    } finally {
-      setIsGeneratingHealingMessage(false);
-    }
-  };
+  //     if (result.candidates && result.candidates.length > 0 &&
+  //         result.candidates[0].content && result.candidates[0].content.parts &&
+  //         result.candidates[0].content.parts.length > 0) {
+  //       const text = result.candidates[0].content.parts[0].text;
+  //       setHealingMessage(text);
+  //     } else {
+  //       setHealingMessage('메시지 생성에 실패했습니다. 다시 시도해주세요.');
+  //       console.error('Gemini API response structure unexpected:', result);
+  //     }
+  //   } catch (error) {
+  //     setHealingMessage('메시지 생성 중 오류가 발생했습니다.');
+  //     console.error('Error calling Gemini API:', error);
+  //   } finally {
+  //     setIsGeneratingHealingMessage(false);
+  //   }
+  // };
 
   // Custom Modal Component
   const Modal = ({ message, onClose }) => (
@@ -373,8 +373,8 @@ const App = () => { // Renamed MarketingWorldCup to App for default export
               </p>
             </div>
 
-            {/* Gemini API Integration: Healing Message */}
-            <div className="mb-6">
+            {/* Gemini API Integration: Healing Message - REMOVED */}
+            {/* <div className="mb-6">
               <button
                 onClick={generateHealingMessage}
                 disabled={isGeneratingHealingMessage}
@@ -388,7 +388,7 @@ const App = () => { // Renamed MarketingWorldCup to App for default export
                   <p>{healingMessage}</p>
                 </div>
               )}
-            </div>
+            </div> */}
 
           </div>
 
@@ -501,3 +501,4 @@ const App = () => { // Renamed MarketingWorldCup to App for default export
 };
 
 export default App;
+�
