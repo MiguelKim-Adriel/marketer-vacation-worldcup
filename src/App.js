@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, BarChart3, MessageSquare, Target, DollarSign, Eye, FileText, TrendingDown, Bell } from 'lucide-react';
 
-const App = () => {
+const App = () => { // Renamed MarketingWorldCup to App for default export
   const initialTasks = [
     {
       id: 1,
@@ -84,6 +84,8 @@ const App = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [healingMessage, setHealingMessage] = useState(''); // State for LLM generated message
+  const [isGeneratingHealingMessage, setIsGeneratingHealingMessage] = useState(false); // Loading state for LLM
 
   // Function to show a custom modal instead of alert
   const showCustomModal = (message) => {
@@ -136,6 +138,7 @@ const App = () => {
       phone: '',
       budget: ''
     });
+    setHealingMessage(''); // Reset healing message on game reset
   };
 
   const handleLeadSubmit = async () => {
@@ -144,14 +147,29 @@ const App = () => {
       setIsSubmitting(true);
       
       try {
-        // Note: Google Apps Script URL is configured in the original code
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyuSvR5EayjraolRWXKkzHYJ8hJDU_Z128lq0RztnBBy8yU9fd5iJvFj-so1KBjc1L0g/exec';
+        // Updated Google Apps Script URL with the new one provided by the user
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyuSvR5EayjraolRWXKkzHYJ8hJDU_Z128lq0RztnBBy8yU9fd5iJvFj-so1KBjc1L0g/exec'; 
         
-        // In this demo environment, we'll just log the data
+        // Send data to Google Spreadsheet
+        if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') { // This condition remains as a safeguard
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            // mode: 'no-cors', // CORS handling is now done in Apps Script, so this is removed
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8', // Content-Type changed for CORS compatibility
+            },
+            body: JSON.stringify(leadInfo)
+          });
+          console.log('✅ 구글 스프레드시트에 저장됨');
+        } else {
+          console.log('⚠️ Google Script URL이 설정되지 않음');
+        }
+        
         console.log('🏖️ Marketer Lead Info:', leadInfo);
-        setGamePhase('playing');
+        setGamePhase('playing'); // Proceed to game even if URL is not set or fetch fails
       } catch (error) {
         console.error('Data submission error:', error);
+        // Continue to game even if an error occurs
         setGamePhase('playing');
       } finally {
         setIsSubmitting(false);
@@ -163,6 +181,46 @@ const App = () => {
 
   const handleInputChange = (field, value) => {
     setLeadInfo(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Function to generate a healing message using Gemini API
+  const generateHealingMessage = async () => {
+    if (!finalWinner) return; // Ensure there's a winner to generate message for
+
+    setIsGeneratingHealingMessage(true);
+    setHealingMessage('힐링 메시지 생성 중...'); // Show loading message
+
+    const prompt = `You are a compassionate and slightly humorous AI assistant for marketers. A marketer just identified their biggest summer vacation worry: '${finalWinner.title}' - '${finalWinner.description}'. Generate a short (2-3 sentences) encouraging and slightly humorous message for them, acknowledging their struggle and offering a lighthearted perspective or a quick, simple tip for enjoying their vacation despite this worry. Start with a friendly greeting.`;
+
+    try {
+      let chatHistory = [];
+      chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+      const payload = { contents: chatHistory };
+      const apiKey = ""; // Leave as empty string for Canvas to provide
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+      const response = await fetch(apiUrl, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(payload)
+             });
+      const result = await response.json();
+
+      if (result.candidates && result.candidates.length > 0 &&
+          result.candidates[0].content && result.candidates[0].content.parts &&
+          result.candidates[0].content.parts.length > 0) {
+        const text = result.candidates[0].content.parts[0].text;
+        setHealingMessage(text);
+      } else {
+        setHealingMessage('메시지 생성에 실패했습니다. 다시 시도해주세요.');
+        console.error('Gemini API response structure unexpected:', result);
+      }
+    } catch (error) {
+      setHealingMessage('메시지 생성 중 오류가 발생했습니다.');
+      console.error('Error calling Gemini API:', error);
+    } finally {
+      setIsGeneratingHealingMessage(false);
+    }
   };
 
   // Custom Modal Component
@@ -305,7 +363,7 @@ const App = () => {
               쉰다고 껐는데 백그라운드에서 계속 돌아가던 놈 = 이 고민
             </p>
             
-            <div className="bg-blue-50 rounded-lg p-6 text-left">
+            <div className="bg-blue-50 rounded-lg p-6 text-left mb-6">
               <h4 className="text-lg font-bold text-blue-900 mb-3 flex items-center gap-2">
                 <span className="text-blue-600">💡</span>
                 아드리엘을 사용하면?
@@ -314,6 +372,24 @@ const App = () => {
                 <strong>Adriel 기능 추천:</strong> {finalWinner.adrielSolution}
               </p>
             </div>
+
+            {/* Gemini API Integration: Healing Message */}
+            <div className="mb-6">
+              <button
+                onClick={generateHealingMessage}
+                disabled={isGeneratingHealingMessage}
+                className={`bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors ${isGeneratingHealingMessage ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                {isGeneratingHealingMessage ? '✨ 힐링 메시지 생성 중...' : '✨ 나만의 힐링 메시지 받기'}
+              </button>
+              {healingMessage && (
+                <div className="mt-4 bg-purple-50 text-purple-900 p-4 rounded-lg text-sm text-left shadow-inner">
+                  <p className="font-medium mb-2">AI의 힐링 메시지:</p>
+                  <p>{healingMessage}</p>
+                </div>
+              )}
+            </div>
+
           </div>
 
           <div className="text-center">
