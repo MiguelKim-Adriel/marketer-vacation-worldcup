@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Trophy, BarChart3, MessageSquare, Target, DollarSign, Eye, FileText, TrendingDown, Bell } from 'lucide-react';
 
 // 컴포넌트 외부로 데이터를 분리하여 불필요한 재선언을 방지합니다.
@@ -69,24 +69,18 @@ const INITIAL_TASKS = [
   }
 ];
 
-// 새로운 필드를 포함한 초기 리드 정보 상태
 const INITIAL_LEAD_INFO = { 
-  name: '', 
-  email: '', 
-  phone: '', 
-  companyName: '', 
-  jobTitle: '', 
-  budget: '' 
+  name: '', email: '', phone: '', companyName: '', jobTitle: '', budget: '' 
 };
 
 // 재사용 가능한 모달 컴포넌트
 const Modal = ({ message, onClose }) => (
-  <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+  <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm mx-auto text-center">
       <p className="text-lg font-semibold text-gray-800 mb-4 break-keep">{message}</p>
       <button
         onClick={onClose}
-        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors w-full"
       >
         확인
       </button>
@@ -106,7 +100,6 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // 모든 필드에 대한 유효성 검사
     if (!leadInfo.name || !leadInfo.email || !leadInfo.phone || !leadInfo.companyName || !leadInfo.jobTitle || !leadInfo.budget) {
       setModal({ show: true, message: '모든 필드를 입력해주세요.' });
       return;
@@ -115,7 +108,6 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
     setIsSubmitting(true);
     try {
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyuSvR5EayjraolRWXKkzHYJ8hJDU_Z128lq0RztnBBy8yU9fd5iJvFj-so1KBjc1L0g/exec';
-      
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors', 
@@ -127,7 +119,7 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
     } finally {
       console.log('🏖️ Marketer Lead Info:', leadInfo);
       setIsSubmitting(false);
-      onLeadSubmit(); // 게임 시작
+      onLeadSubmit();
     }
   };
 
@@ -139,42 +131,39 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
           <img 
             src="https://images.pexels.com/photos/237272/pexels-photo-237272.jpeg?auto=compress&cs=tinysrgb&w=1200&h=400&fit=crop" 
             alt="아름다운 해변 풍경"
-            className="w-full h-48 object-cover"
+            className="w-full h-40 sm:h-48 object-cover"
           />
           
-          <div className="p-8">
+          <div className="p-6 sm:p-8">
             <div className="text-center mb-6">
-              <h1 className="text-3xl font-bold text-gray-800 mb-2 break-keep">🏖️ 마케터 여름휴가 고민 월드컵</h1>
-              <p className="text-gray-600 break-keep">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 break-keep">🏖️ 마케터 여름휴가 고민 월드컵</h1>
+              <p className="text-gray-600 break-keep text-sm sm:text-base">
                 마케터들의 여름휴가 고민을 재미있게 풀어보세요! 😅<br />
-                먼저 간단한 정보를 입력해주시면 시작할 수 있습니다.
+                결과 페이지를 보여주시면 휴가철 필수템도 증정!
               </p>
             </div>
 
             <h2 className="text-xl font-bold text-gray-800 mb-6 text-center border-t pt-6 break-keep">마케터 정보 입력</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* 입력 필드들 */}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">담당자명 *</label>
-                <input id="name" type="text" value={leadInfo.name} onChange={(e) => handleInputChange('name', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="홍길동" required />
+                <input id="name" type="text" value={leadInfo.name} onChange={(e) => handleInputChange('name', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="홍길동" required />
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">회사 이메일 *</label>
-                <input id="email" type="email" value={leadInfo.email} onChange={(e) => handleInputChange('email', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="marketer@company.com" required />
+                <input id="email" type="email" value={leadInfo.email} onChange={(e) => handleInputChange('email', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="marketer@company.com" required />
               </div>
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">전화번호 *</label>
-                <input id="phone" type="tel" value={leadInfo.phone} onChange={(e) => handleInputChange('phone', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="010-1234-5678" required />
+                <input id="phone" type="tel" value={leadInfo.phone} onChange={(e) => handleInputChange('phone', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="01012345678" required />
               </div>
-              {/* 추가된 필드: 회사명 / 서비스명 */}
               <div>
                 <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">회사명 / 서비스명 *</label>
-                <input id="companyName" type="text" value={leadInfo.companyName} onChange={(e) => handleInputChange('companyName', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="아드리엘" required />
+                <input id="companyName" type="text" value={leadInfo.companyName} onChange={(e) => handleInputChange('companyName', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="아드리엘" required />
               </div>
-              {/* 추가된 필드: 직책 및 직급 */}
               <div>
                 <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700 mb-2">직책 및 직급 *</label>
-                <select id="jobTitle" value={leadInfo.jobTitle} onChange={(e) => handleInputChange('jobTitle', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <select id="jobTitle" value={leadInfo.jobTitle} onChange={(e) => handleInputChange('jobTitle', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                   <option value="">직책/직급을 선택해주세요</option>
                   <option value="intern_staff">인턴/사원급</option>
                   <option value="assistant_manager">대리/과장급</option>
@@ -183,10 +172,9 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
                   <option value="ceo">CEO</option>
                 </select>
               </div>
-              {/* 수정된 필드: 월 마케팅 예산 */}
               <div>
                 <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-2">월 마케팅 예산을 알려주세요 *</label>
-                <select id="budget" value={leadInfo.budget} onChange={(e) => handleInputChange('budget', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <select id="budget" value={leadInfo.budget} onChange={(e) => handleInputChange('budget', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                   <option value="">예산 규모를 선택해주세요</option>
                   <option value="no_ads">광고 미진행</option>
                   <option value="under_10m">1천만원 이하</option>
@@ -230,7 +218,7 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
       setMatch(match + 1);
     } else {
       if (newWinners.length === 1) {
-        onSelect(newWinners[0]); // 최종 우승자 전달
+        onSelect(newWinners[0]);
       } else {
         setCurrentTasks(newWinners);
         setWinners([]);
@@ -242,57 +230,54 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
   const task1 = currentTasks[match * 2];
   const task2 = currentTasks[match * 2 + 1];
 
-  if (!task1 || !task2) return null; // 렌더링 보호
+  if (!task1 || !task2) return null;
 
   const progress = Math.round(((match) / (currentTasks.length / 2)) * 100);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4 font-sans flex items-center justify-center">
       <div className="max-w-4xl mx-auto w-full">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2 break-keep">🏖️ 마케터 여름휴가 고민 월드컵</h1>
-          <p className="text-gray-600 mb-4 break-keep">둘 중 더 싫은 업무를 선택해주세요! 😭</p>
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 break-keep">🏖️ 마케터 여름휴가 고민 월드컵</h1>
+          <p className="text-gray-600 mb-4 break-keep text-sm sm:text-base">둘 중 더 싫은 업무를 선택해주세요! 😭</p>
           <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
             <span className="bg-white px-3 py-1 rounded-full font-semibold">{getRoundName(currentTasks.length)}</span>
             <span>{match + 1} / {currentTasks.length / 2}</span>
           </div>
         </div>
 
-        <div className="relative">
-            <div className="grid md:grid-cols-2 gap-6 items-stretch">
-                {/* Task 1 Card */}
-                <div onClick={() => handleSelect(task1)} className="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between">
-                    <div className="text-center">
-                        <div className={`${task1.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>{task1.icon}</div>
-                        <h3 className="text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line h-16 flex items-center justify-center">{task1.title}</h3>
-                        <p className="text-gray-600 text-sm leading-relaxed break-keep">{task1.description}</p>
-                    </div>
-                </div>
+        <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8 items-center">
+          {/* Task 1 Card */}
+          <div onClick={() => handleSelect(task1)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mb-4 md:mb-0">
+            <div className="text-center">
+              <div className={`${task1.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>{task1.icon}</div>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line h-16 flex items-center justify-center">{task1.title}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed break-keep">{task1.description}</p>
+            </div>
+          </div>
 
-                {/* Task 2 Card */}
-                <div onClick={() => handleSelect(task2)} className="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between">
-                    <div className="text-center">
-                        <div className={`${task2.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>{task2.icon}</div>
-                        <h3 className="text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line h-16 flex items-center justify-center">{task2.title}</h3>
-                        <p className="text-gray-600 text-sm leading-relaxed break-keep">{task2.description}</p>
-                    </div>
-                </div>
+          {/* VS Separator for Mobile */}
+          <div className="md:hidden flex items-center justify-center my-2">
+            <div className="bg-red-500 text-white px-4 py-1 rounded-full font-bold text-base shadow-lg">VS</div>
+          </div>
+
+          {/* Task 2 Card */}
+          <div onClick={() => handleSelect(task2)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mt-4 md:mt-0">
+            <div className="text-center">
+              <div className={`${task2.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>{task2.icon}</div>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line h-16 flex items-center justify-center">{task2.title}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed break-keep">{task2.description}</p>
             </div>
-            
-            {/* VS Separator */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-                <div className="bg-red-500 text-white px-6 py-3 rounded-full font-bold text-lg shadow-lg">VS</div>
-            </div>
+          </div>
         </div>
 
-        {/* Progress Bar */}
         <div className="mt-8 bg-white rounded-lg p-4">
           <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
             <span>진행률</span>
             <span>{progress}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-blue-500 h-2 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+          <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="bg-blue-500 h-2.5 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
           </div>
         </div>
 
@@ -308,25 +293,25 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
 // 결과 화면 컴포넌트
 const FinishedScreen = ({ winner, onReset }) => (
   <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4 font-sans flex items-center justify-center">
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto w-full">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Trophy className="w-12 h-12 text-yellow-500" />
-          <h1 className="text-3xl font-bold text-gray-800 break-keep">🏆 우승!</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 break-keep">🏆 우승!</h1>
         </div>
-        <h2 className="text-xl text-gray-600 mb-6 break-keep">마케터의 최대 고민이 무엇인지 확인해보세요!</h2>
+        <h2 className="text-lg sm:text-xl text-gray-600 mb-6 break-keep">마케터의 최대 고민이 무엇인지 확인해보세요!</h2>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg p-8 text-center mb-8">
+      <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center mb-8">
         <div className={`${winner.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
           {winner.icon}
         </div>
-        <h3 className="text-2xl font-bold text-gray-800 mb-2 break-keep text-center whitespace-pre-line">{winner.title}</h3>
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 break-keep text-center whitespace-pre-line">{winner.title}</h3>
         <p className="text-gray-600 mb-6 break-keep">{winner.description}</p>
         <div className="text-4xl mb-4">😱</div>
         <p className="text-lg text-gray-700 mb-8 break-keep">
           <strong>우승!</strong><br />
-          쉰다고 껐는데 백그라운드에서 계속 돌아가던 놈 = 이 고민
+          이건 첫 번째 레슨, 안좋은 건 너만 알기 
         </p>
         
         <div className="bg-blue-50 rounded-lg p-6 text-left mb-6">
@@ -362,8 +347,13 @@ const FinishedScreen = ({ winner, onReset }) => (
 
 // 메인 앱 컴포넌트
 const App = () => {
-  const [gamePhase, setGamePhase] = useState('lead'); // 'lead', 'playing', 'finished'
+  const [gamePhase, setGamePhase] = useState('lead');
   const [finalWinner, setFinalWinner] = useState(null);
+
+  // 화면이 바뀔 때마다 맨 위로 스크롤합니다.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [gamePhase]);
 
   const handleStartGame = () => setGamePhase('playing');
   
