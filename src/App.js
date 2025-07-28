@@ -5,9 +5,9 @@ import { Trophy, BarChart3, MessageSquare, Target, DollarSign, Eye, FileText, Tr
 const INITIAL_TASKS = [
   {
     id: 1,
-    title: "휴가 중에도 예산 소진 체크 알림\n폭격 받기",
-    description: "하루 종일 울리는 예산 알림... 휴가가 휴가 같지 않아 😵",
-    icon: <DollarSign className="w-8 h-8" />,
+    title: "업무공백 중 불안한 예산 초과",
+    description: "예산이 초과될까봐 걱정인 휴가가 휴가 같지 않아 😵",
+    icon: <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-red-500",
     adrielSolution: "Goal Pacing 기능 → 캠페인 목표 예산 대비 실적을 실시간 추적하며, 설정된 목표 이상으로 지출되면 자동으로 알림을 받아 예산 낭비를 사전에 차단할 수 있어요."
   },
@@ -15,7 +15,7 @@ const INITIAL_TASKS = [
     id: 2,
     title: "고객사 전화 \"보고서 아직인가요?\" 😠",
     description: "휴가지에서 울리는 고객 전화... 뭐라고 답해야 하지?",
-    icon: <MessageSquare className="w-8 h-8" />,
+    icon: <MessageSquare className="w-10 h-10" />,
     color: "bg-orange-500",
     adrielSolution: "리포트 공유 기능 → 자동 생성된 대시보드 리포트 링크를 고객에게 실시간 공유하면, 휴가 중에도 문의 없이 셀프 확인이 가능해요."
   },
@@ -23,7 +23,7 @@ const INITIAL_TASKS = [
     id: 3,
     title: "리드 줄었는지 확인하려고 노트북 켜기",
     description: "해변에서 노트북 켜고 있는 나... 이게 맞나?",
-    icon: <TrendingDown className="w-8 h-8" />,
+    icon: <TrendingDown className="w-10 h-10" />,
     color: "bg-blue-500",
     adrielSolution: "AI 에이전트 기능 → \"지난주 리드가 왜 줄었지?\"처럼 질문만 하면, AI가 분석해 답을 주니까 노트북 없이도 모바일에서 바로 해결할 수 있어요."
   },
@@ -31,7 +31,7 @@ const INITIAL_TASKS = [
     id: 4,
     title: "퇴근 전 설정한 광고,\n휴가 중엔 어떻게 돼가나 안절부절하기",
     description: "저 광고 잘 돌아가고 있을까... 계속 신경 쓰여 🤔",
-    icon: <Target className="w-8 h-8" />,
+    icon: <Target className="w-10 h-10" />,
     color: "bg-purple-500",
     adrielSolution: "오토메이션 기능 → 캠페인 성과나 특정 조건에 따라 자동 알림 or 이메일 보고서를 설정하면, 아무 걱정 없이 휴가 보내도 돼요."
   },
@@ -39,7 +39,7 @@ const INITIAL_TASKS = [
     id: 5,
     title: "캠페인 성과가 안 좋아서,\n원인 파악하느라 밤잠 설침",
     description: "성과 안 나오는데 어떻게 해야 하지... 잠이 안 와 😴",
-    icon: <Eye className="w-8 h-8" />,
+    icon: <Eye className="w-10 h-10" />,
     color: "bg-green-500",
     adrielSolution: "템플릿 라이브러리 기능 → 업종별/목표별 캠페인 성과 분석 템플릿을 통해 빠르게 개선 포인트 확인 가능."
   },
@@ -47,7 +47,7 @@ const INITIAL_TASKS = [
     id: 6,
     title: "마감 보고서 작성하느라\n공항에서 PPT 열기",
     description: "비행기 타기 전 공항에서 급하게 PPT... 진짜 최악 ✈️",
-    icon: <FileText className="w-8 h-8" />,
+    icon: <FileText className="w-10 h-10" />,
     color: "bg-pink-500",
     adrielSolution: "대시보드 실시간 업데이트 기능 → 실적이 자동 반영된 실시간 대시보드를 통해 보고서 작성 없이 링크만 전달하면 끝!"
   },
@@ -55,7 +55,7 @@ const INITIAL_TASKS = [
     id: 7,
     title: "여러 광고매체 성과 모으느라\n노가다 작업 반복",
     description: "페이스북, 구글, 네이버... 하나씩 다 들어가서 확인 🔄",
-    icon: <BarChart3 className="w-8 h-8" />,
+    icon: <BarChart3 className="w-10 h-10" />,
     color: "bg-yellow-500",
     adrielSolution: "광고 매체 통합 기능 (Dashboard 기본 기능) → Meta, Google, Naver, Kakao 등 600개+ 매체 데이터 자동 통합, Excel 다운로드도 클릭 한 번!"
   },
@@ -63,7 +63,7 @@ const INITIAL_TASKS = [
     id: 8,
     title: "실시간으로 알림 오는 카톡&메일\n휴가 중에 완전 방해받기",
     description: "쉬고 있는데 계속 울리는 알림... 스트레스 MAX 📱",
-    icon: <Bell className="w-8 h-8" />,
+    icon: <Bell className="w-10 h-10" />,
     color: "bg-indigo-500",
     adrielSolution: "자동화 기반 데일리 요약 보고 기능 → 오전 9시 등 원하는 시간에 하루 1회만 요약 리포트를 받아서 알림 스트레스를 줄일 수 있어요."
   }
@@ -95,13 +95,23 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
   const [modal, setModal] = useState({ show: false, message: '' });
 
   const handleInputChange = (field, value) => {
-    setLeadInfo(prev => ({ ...prev, [field]: value }));
+    if (field === 'phone') {
+      const numericValue = value.replace(/\D/g, '');
+      setLeadInfo(prev => ({ ...prev, [field]: numericValue }));
+    } else {
+      setLeadInfo(prev => ({ ...prev, [field]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!leadInfo.name || !leadInfo.email || !leadInfo.phone || !leadInfo.companyName || !leadInfo.jobTitle || !leadInfo.budget) {
       setModal({ show: true, message: '모든 필드를 입력해주세요.' });
+      return;
+    }
+
+    if (leadInfo.phone.length !== 11) {
+      setModal({ show: true, message: "전화번호 11자리를 '-' 없이 정확하게 입력해주세요." });
       return;
     }
     
@@ -155,7 +165,7 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
               </div>
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">전화번호 *</label>
-                <input id="phone" type="tel" value={leadInfo.phone} onChange={(e) => handleInputChange('phone', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="01012345678" required />
+                <input id="phone" type="tel" value={leadInfo.phone} onChange={(e) => handleInputChange('phone', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="'-' 없이 11자리 입력" required maxLength="11" />
               </div>
               <div>
                 <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">회사명 / 서비스명 *</label>
@@ -232,8 +242,6 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
 
   if (!task1 || !task2) return null;
 
-  const progress = Math.round(((match) / (currentTasks.length / 2)) * 100);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4 font-sans flex items-center justify-center">
       <div className="max-w-4xl mx-auto w-full">
@@ -250,8 +258,16 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
           {/* Task 1 Card */}
           <div onClick={() => handleSelect(task1)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mb-4 md:mb-0">
             <div className="text-center">
-              <div className={`${task1.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>{task1.icon}</div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line h-16 flex items-center justify-center">{task1.title}</h3>
+              {task1.id === 1 ? (
+                <div className="h-24 flex items-center justify-center mx-auto mb-4">
+                  <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-32 h-auto object-contain" />
+                </div>
+              ) : (
+                <div className={`${task1.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
+                  {task1.icon}
+                </div>
+              )}
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line flex items-center justify-center min-h-[4rem]">{task1.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed break-keep">{task1.description}</p>
             </div>
           </div>
@@ -264,24 +280,22 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
           {/* Task 2 Card */}
           <div onClick={() => handleSelect(task2)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mt-4 md:mt-0">
             <div className="text-center">
-              <div className={`${task2.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>{task2.icon}</div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line h-16 flex items-center justify-center">{task2.title}</h3>
+              {task2.id === 1 ? (
+                 <div className="h-24 flex items-center justify-center mx-auto mb-4">
+                  <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-32 h-auto object-contain" />
+                </div>
+              ) : (
+                <div className={`${task2.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
+                  {task2.icon}
+                </div>
+              )}
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line flex items-center justify-center min-h-[4rem]">{task2.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed break-keep">{task2.description}</p>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 bg-white rounded-lg p-4">
-          <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-            <span>진행률</span>
-            <span>{progress}%</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
-            <div className="bg-blue-500 h-2.5 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
-          </div>
-        </div>
-
-        <div className="text-center mt-6">
+        <div className="text-center mt-8">
           <button onClick={onReset} className="text-gray-500 hover:text-gray-700 text-sm underline">처음부터 다시 시작</button>
         </div>
       </div>
@@ -303,9 +317,15 @@ const FinishedScreen = ({ winner, onReset }) => (
       </div>
 
       <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center mb-8">
-        <div className={`${winner.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
-          {winner.icon}
-        </div>
+        {winner.id === 1 ? (
+          <div className="h-24 flex items-center justify-center mx-auto mb-4">
+            <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-36 h-auto object-contain" />
+          </div>
+        ) : (
+          <div className={`${winner.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
+            {winner.icon}
+          </div>
+        )}
         <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 break-keep text-center whitespace-pre-line">{winner.title}</h3>
         <p className="text-gray-600 mb-6 break-keep">{winner.description}</p>
         <div className="text-4xl mb-4">😱</div>
