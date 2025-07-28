@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Trophy, BarChart3, MessageSquare, Target, DollarSign, Eye, FileText, TrendingDown, Bell } from 'lucide-react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { Trophy } from 'lucide-react';
 
 // 컴포넌트 외부로 데이터를 분리하여 불필요한 재선언을 방지합니다.
 const INITIAL_TASKS = [
@@ -7,70 +7,101 @@ const INITIAL_TASKS = [
     id: 1,
     title: "업무공백 중 불안한 예산 초과",
     description: "예산이 초과될까봐 휴가가 휴가 같지 않아 😵",
-    icon: <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-red-500",
+    icon: "https://i.imgur.com/xXkiKG5.png",
     adrielSolution: "Goal Pacing 기능 → 캠페인 목표 예산 대비 실적을 실시간 추적하며, 설정된 목표 이상으로 지출되면 자동으로 알림을 받아 예산 낭비를 사전에 차단할 수 있어요."
   },
   {
     id: 2,
     title: "휴가 중 갑작스런 보고서 요청 전화",
     description: "딱 누웠는데 “오늘 중으로 보고서 받을 수 있을까요?” 연락 오는 순간...",
-    icon: <img src="https://i.imgur.com/19Nqy0e.png" alt="보고서 요청 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-orange-500",
+    icon: "https://i.imgur.com/nbCV8WG.png",
     adrielSolution: "리포트 공유 기능 → 자동 생성된 대시보드 리포트 링크를 고객에게 실시간 공유하면, 휴가 중에도 문의 없이 셀프 확인이 가능해요."
   },
   {
     id: 3,
     title: "휴가의 기쁨과 반비례하는 캠페인 성과",
     description: "아이디어는 텅텅, 시간은 퇴근 시간... 비행기표도 끊어놨는데..",
-    icon: <img src="https://i.imgur.com/lDKveIr.png" alt="캠페인 성과 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-blue-500",
+    icon: "https://i.imgur.com/JVmCj0v.png",
     adrielSolution: "AI 에이전트 기능 → \"지난주 리드가 왜 줄었지?\"처럼 질문만 하면, AI가 분석해 답을 주니까 노트북 없이도 모바일에서 바로 해결할 수 있어요."
   },
   {
     id: 4,
     title: "휴가 중 문득 떠오르는 캠페인 성과 걱정",
     description: "쉬는데도 생각나는 여름 프로모션 성과.. 잘 돌아가나?",
-    icon: <img src="https://imgur.com/KpKDfQ2" alt="캠페인 퍼포먼스 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-purple-500",
+    icon: "https://i.imgur.com/UpsRaRS.png",
     adrielSolution: "오토메이션 기능 → 캠페인 성과나 특정 조건에 따라 자동 알림 or 이메일 보고서를 설정하면, 아무 걱정 없이 휴가 보내도 돼요."
   },
   {
     id: 5,
     title: "무더위에도 가을 캠페인 기획하는 나란 마케터..",
     description: "성과 예측도 어려운데 내부 리소스는 쉬고, 고객 반응도 적고..",
-    icon: <img src="https://imgur.com/1rq7ixN" alt="성과 예측 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-green-500",
+    icon: "https://i.imgur.com/JXTYPQf.png",
     adrielSolution: "템플릿 라이브러리 기능 → 업종별/목표별 캠페인 성과 분석 템플릿을 통해 빠르게 개선 포인트 확인 가능."
   },
   {
     id: 6,
     title: "공항 가기 한시간 전.. 갑작스런 광고 세팅 요청",
     description: "공항에서도 내 손은 아직 키보드 위🧑‍💻🥲",
-    icon: <img src="https://imgur.com/r8VKFIl" alt="광고 세팅 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-pink-500",
+    icon: "https://i.imgur.com/Mou1A7p.png",
     adrielSolution: "대시보드 실시간 업데이트 기능 → 실적이 자동 반영된 실시간 대시보드를 통해 보고서 작성 없이 링크만 전달하면 끝!"
   },
   {
     id: 7,
     title: "휴가철에도 멈추지 않는 성과 취합 노가다",
     description: "페이스북, 구글, 네이버... 하나씩 다 들어가서 확인 🔄",
-    icon: <img src="https://imgur.com/6COub9K" alt="광고 보고서 취합 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-yellow-500",
+    icon: "https://i.imgur.com/PWd3Poc.png",
     adrielSolution: "광고 매체 통합 기능 (Dashboard 기본 기능) → Meta, Google, Naver, Kakao 등 600개+ 매체 데이터 자동 통합, Excel 다운로드도 클릭 한 번!"
   },
   {
     id: 8,
     title: "팀원의 계속되는 업무 관련 연락\n휴가 중에 완전 방해받기",
     description: "쉬고 있는데 계속 울리는 까톡... 스트레스 MAX 📱",
-    icon: <img src="https://imgur.com/3bapZh5" alt="맞춤형 대시보드 아이콘" className="w-10 h-10 object-contain" />,
-    color: "bg-indigo-500",
+    icon: "https://i.imgur.com/3DmxSSl.png",
     adrielSolution: "자동화 기반 데일리 요약 보고 기능 → 오전 9시 등 원하는 시간에 하루 1회만 요약 리포트를 받아서 알림 스트레스를 줄일 수 있어요."
   }
 ];
 
 const INITIAL_LEAD_INFO = { 
   name: '', email: '', phone: '', companyName: '', jobTitle: '', budget: '' 
+};
+
+// 이미지 지연 로딩(Lazy Loading)을 위한 재사용 컴포넌트
+const LazyImage = ({ src, alt, className }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => setIsLoaded(true);
+            observer.unobserve(imgRef.current);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => {
+      if (imgRef.current) {
+        observer.unobserve(imgRef.current);
+      }
+    };
+  }, [src]);
+
+  // 깜빡이는 animate-pulse 클래스를 제거하여 정적인 플레이스홀더를 보여줍니다.
+  return (
+    <div ref={imgRef} className={`${className} bg-gray-200 rounded-lg`}>
+      {isLoaded && <img src={src} alt={alt} className={`${className} transition-opacity duration-500 opacity-100`} />}
+    </div>
+  );
 };
 
 // 재사용 가능한 모달 컴포넌트
@@ -93,6 +124,15 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
   const [leadInfo, setLeadInfo] = useState(INITIAL_LEAD_INFO);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modal, setModal] = useState({ show: false, message: '' });
+
+  useEffect(() => {
+    INITIAL_TASKS.forEach(task => {
+      if (typeof task.icon === 'string') {
+        const img = new Image();
+        img.src = task.icon;
+      }
+    });
+  }, []);
 
   const handleInputChange = (field, value) => {
     if (field === 'phone') {
@@ -138,7 +178,7 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
       {modal.show && <Modal message={modal.message} onClose={() => setModal({ show: false, message: '' })} />}
       <div className="max-w-lg mx-auto w-full">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          <img 
+          <LazyImage 
             src="https://images.pexels.com/photos/237272/pexels-photo-237272.jpeg?auto=compress&cs=tinysrgb&w=1200&h=400&fit=crop" 
             alt="아름다운 해변 풍경"
             className="w-full h-40 sm:h-48 object-cover"
@@ -195,7 +235,7 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
               </div>
               <div className="pt-4">
                 <button type="submit" disabled={isSubmitting} className={`w-full ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'} text-white py-3 px-4 rounded-lg font-semibold transition-colors`}>
-                  {isSubmitting ? '처리 중...' : '월드컵 시작하기! 🏆'}
+                  {isSubmitting ? '월드컵 개최 중...' : '월드컵 시작하기! 🏆'}
                 </button>
               </div>
             </form>
@@ -256,17 +296,11 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
 
         <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8 items-center">
           {/* Task 1 Card */}
-          <div onClick={() => handleSelect(task1)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mb-4 md:mb-0">
+          <div onClick={() => handleSelect(task1)} className="w-full bg-white rounded-xl shadow-lg px-6 pt-10 pb-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mb-4 md:mb-0">
             <div className="text-center">
-              {[1, 2, 3].includes(task1.id) ? (
-                <div className="h-24 flex items-center justify-center mx-auto mb-4">
-                  {React.cloneElement(task1.icon, { className: "w-32 h-auto object-contain" })}
-                </div>
-              ) : (
-                <div className={`${task1.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
-                  {task1.icon}
-                </div>
-              )}
+              <div className="flex items-center justify-center mx-auto mb-8" style={{height: '8.5rem'}}>
+                <LazyImage src={task1.icon} alt={`${task1.title} 아이콘`} className="w-48 h-auto object-contain" />
+              </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line flex items-center justify-center min-h-[4rem]">{task1.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed break-keep">{task1.description}</p>
             </div>
@@ -278,17 +312,11 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
           </div>
 
           {/* Task 2 Card */}
-          <div onClick={() => handleSelect(task2)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mt-4 md:mt-0">
+          <div onClick={() => handleSelect(task2)} className="w-full bg-white rounded-xl shadow-lg px-6 pt-10 pb-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mt-4 md:mt-0">
             <div className="text-center">
-              {[1, 2, 3].includes(task2.id) ? (
-                 <div className="h-24 flex items-center justify-center mx-auto mb-4">
-                  {React.cloneElement(task2.icon, { className: "w-32 h-auto object-contain" })}
-                </div>
-              ) : (
-                <div className={`${task2.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
-                  {task2.icon}
-                </div>
-              )}
+              <div className="flex items-center justify-center mx-auto mb-8" style={{height: '8.5rem'}}>
+                <LazyImage src={task2.icon} alt={`${task2.title} 아이콘`} className="w-48 h-auto object-contain" />
+              </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line flex items-center justify-center min-h-[4rem]">{task2.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed break-keep">{task2.description}</p>
             </div>
@@ -316,17 +344,11 @@ const FinishedScreen = ({ winner, onReset }) => (
         <h2 className="text-lg sm:text-xl text-gray-600 mb-6 break-keep">마케터의 최대 고민이 무엇인지 확인해보세요!</h2>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center mb-8">
-        {[1, 2, 3].includes(winner.id) ? (
-          <div className="h-24 flex items-center justify-center mx-auto mb-4">
-            {React.cloneElement(winner.icon, { className: "w-36 h-auto object-contain" })}
-          </div>
-        ) : (
-          <div className={`${winner.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
-            {winner.icon}
-          </div>
-        )}
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 break-keep text-center whitespace-pre-line">{winner.title}</h3>
+      <div className="bg-white rounded-xl shadow-lg px-6 sm:px-8 pt-10 sm:pt-12 pb-6 sm:pb-8 text-center mb-8">
+        <div className="flex items-center justify-center mx-auto mb-8" style={{height: '9.5rem'}}>
+          <LazyImage src={winner.icon} alt={`${winner.title} 아이콘`} className="w-52 h-auto object-contain" />
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line">{winner.title}</h3>
         <p className="text-gray-600 mb-6 break-keep">{winner.description}</p>
         <div className="text-4xl mb-4">😱</div>
         <p className="text-lg text-gray-700 mb-8 break-keep">
