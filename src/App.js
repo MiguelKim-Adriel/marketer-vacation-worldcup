@@ -6,64 +6,64 @@ const INITIAL_TASKS = [
   {
     id: 1,
     title: "업무공백 중 불안한 예산 초과",
-    description: "예산이 초과될까봐 걱정인 휴가가 휴가 같지 않아 😵",
+    description: "예산이 초과될까봐 휴가가 휴가 같지 않아 😵",
     icon: <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-red-500",
     adrielSolution: "Goal Pacing 기능 → 캠페인 목표 예산 대비 실적을 실시간 추적하며, 설정된 목표 이상으로 지출되면 자동으로 알림을 받아 예산 낭비를 사전에 차단할 수 있어요."
   },
   {
     id: 2,
-    title: "고객사 전화 \"보고서 아직인가요?\" 😠",
-    description: "휴가지에서 울리는 고객 전화... 뭐라고 답해야 하지?",
-    icon: <MessageSquare className="w-10 h-10" />,
+    title: "휴가 중 갑작스런 보고서 요청 전화",
+    description: "딱 누웠는데 “오늘 중으로 보고서 받을 수 있을까요?” 연락 오는 순간...",
+    icon: <img src="https://i.imgur.com/19Nqy0e.png" alt="보고서 요청 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-orange-500",
     adrielSolution: "리포트 공유 기능 → 자동 생성된 대시보드 리포트 링크를 고객에게 실시간 공유하면, 휴가 중에도 문의 없이 셀프 확인이 가능해요."
   },
   {
     id: 3,
-    title: "리드 줄었는지 확인하려고 노트북 켜기",
-    description: "해변에서 노트북 켜고 있는 나... 이게 맞나?",
-    icon: <TrendingDown className="w-10 h-10" />,
+    title: "휴가의 기쁨과 반비례하는 캠페인 성과",
+    description: "아이디어는 텅텅, 시간은 퇴근 시간... 비행기표도 끊어놨는데..",
+    icon: <img src="https://i.imgur.com/lDKveIr.png" alt="캠페인 성과 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-blue-500",
     adrielSolution: "AI 에이전트 기능 → \"지난주 리드가 왜 줄었지?\"처럼 질문만 하면, AI가 분석해 답을 주니까 노트북 없이도 모바일에서 바로 해결할 수 있어요."
   },
   {
     id: 4,
-    title: "퇴근 전 설정한 광고,\n휴가 중엔 어떻게 돼가나 안절부절하기",
-    description: "저 광고 잘 돌아가고 있을까... 계속 신경 쓰여 🤔",
-    icon: <Target className="w-10 h-10" />,
+    title: "휴가 중 문득 떠오르는 캠페인 성과 걱정",
+    description: "쉬는데도 생각나는 여름 프로모션 성과.. 잘 돌아가나?",
+    icon: <img src="https://imgur.com/KpKDfQ2" alt="캠페인 퍼포먼스 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-purple-500",
     adrielSolution: "오토메이션 기능 → 캠페인 성과나 특정 조건에 따라 자동 알림 or 이메일 보고서를 설정하면, 아무 걱정 없이 휴가 보내도 돼요."
   },
   {
     id: 5,
-    title: "캠페인 성과가 안 좋아서,\n원인 파악하느라 밤잠 설침",
-    description: "성과 안 나오는데 어떻게 해야 하지... 잠이 안 와 😴",
-    icon: <Eye className="w-10 h-10" />,
+    title: "무더위에도 가을 캠페인 기획하는 나란 마케터..",
+    description: "성과 예측도 어려운데 내부 리소스는 쉬고, 고객 반응도 적고..",
+    icon: <img src="https://imgur.com/1rq7ixN" alt="성과 예측 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-green-500",
     adrielSolution: "템플릿 라이브러리 기능 → 업종별/목표별 캠페인 성과 분석 템플릿을 통해 빠르게 개선 포인트 확인 가능."
   },
   {
     id: 6,
-    title: "마감 보고서 작성하느라\n공항에서 PPT 열기",
-    description: "비행기 타기 전 공항에서 급하게 PPT... 진짜 최악 ✈️",
-    icon: <FileText className="w-10 h-10" />,
+    title: "공항 가기 한시간 전.. 갑작스런 광고 세팅 요청",
+    description: "공항에서도 내 손은 아직 키보드 위🧑‍💻🥲",
+    icon: <img src="https://imgur.com/r8VKFIl" alt="광고 세팅 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-pink-500",
     adrielSolution: "대시보드 실시간 업데이트 기능 → 실적이 자동 반영된 실시간 대시보드를 통해 보고서 작성 없이 링크만 전달하면 끝!"
   },
   {
     id: 7,
-    title: "여러 광고매체 성과 모으느라\n노가다 작업 반복",
+    title: "휴가철에도 멈추지 않는 성과 취합 노가다",
     description: "페이스북, 구글, 네이버... 하나씩 다 들어가서 확인 🔄",
-    icon: <BarChart3 className="w-10 h-10" />,
+    icon: <img src="https://imgur.com/6COub9K" alt="광고 보고서 취합 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-yellow-500",
     adrielSolution: "광고 매체 통합 기능 (Dashboard 기본 기능) → Meta, Google, Naver, Kakao 등 600개+ 매체 데이터 자동 통합, Excel 다운로드도 클릭 한 번!"
   },
   {
     id: 8,
-    title: "실시간으로 알림 오는 카톡&메일\n휴가 중에 완전 방해받기",
-    description: "쉬고 있는데 계속 울리는 알림... 스트레스 MAX 📱",
-    icon: <Bell className="w-10 h-10" />,
+    title: "팀원의 계속되는 업무 관련 연락\n휴가 중에 완전 방해받기",
+    description: "쉬고 있는데 계속 울리는 까톡... 스트레스 MAX 📱",
+    icon: <img src="https://imgur.com/3bapZh5" alt="맞춤형 대시보드 아이콘" className="w-10 h-10 object-contain" />,
     color: "bg-indigo-500",
     adrielSolution: "자동화 기반 데일리 요약 보고 기능 → 오전 9시 등 원하는 시간에 하루 1회만 요약 리포트를 받아서 알림 스트레스를 줄일 수 있어요."
   }
@@ -258,9 +258,9 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
           {/* Task 1 Card */}
           <div onClick={() => handleSelect(task1)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mb-4 md:mb-0">
             <div className="text-center">
-              {task1.id === 1 ? (
+              {[1, 2, 3].includes(task1.id) ? (
                 <div className="h-24 flex items-center justify-center mx-auto mb-4">
-                  <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-32 h-auto object-contain" />
+                  {React.cloneElement(task1.icon, { className: "w-32 h-auto object-contain" })}
                 </div>
               ) : (
                 <div className={`${task1.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
@@ -280,9 +280,9 @@ const GameScreen = ({ tasks, onSelect, onReset }) => {
           {/* Task 2 Card */}
           <div onClick={() => handleSelect(task2)} className="w-full bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mt-4 md:mt-0">
             <div className="text-center">
-              {task2.id === 1 ? (
+              {[1, 2, 3].includes(task2.id) ? (
                  <div className="h-24 flex items-center justify-center mx-auto mb-4">
-                  <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-32 h-auto object-contain" />
+                  {React.cloneElement(task2.icon, { className: "w-32 h-auto object-contain" })}
                 </div>
               ) : (
                 <div className={`${task2.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
@@ -317,9 +317,9 @@ const FinishedScreen = ({ winner, onReset }) => (
       </div>
 
       <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center mb-8">
-        {winner.id === 1 ? (
+        {[1, 2, 3].includes(winner.id) ? (
           <div className="h-24 flex items-center justify-center mx-auto mb-4">
-            <img src="https://i.imgur.com/nVuwuPt.png" alt="예산 초과 아이콘" className="w-36 h-auto object-contain" />
+            {React.cloneElement(winner.icon, { className: "w-36 h-auto object-contain" })}
           </div>
         ) : (
           <div className={`${winner.color} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white`}>
