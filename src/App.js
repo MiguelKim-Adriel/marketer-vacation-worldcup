@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Trophy } from 'lucide-react';
 
 // 컴포넌트 외부로 데이터를 분리하여 불필요한 재선언을 방지합니다.
-// 결과 화면용 미디어(resultIcon, resultType)를 별도로 추가했습니다.
 const INITIAL_TASKS = [
   {
     id: 1,
@@ -77,7 +76,7 @@ const INITIAL_TASKS = [
 ];
 
 const INITIAL_LEAD_INFO = { 
-  name: '', email: '', phone: '', companyName: '', jobTitle: '', budget: '' 
+  name: '', email: '', phone: '', companyName: '', jobTitle: '', budget: '', giveawayConsent: false 
 };
 
 // 이미지 지연 로딩(Lazy Loading)을 위한 재사용 컴포넌트
@@ -219,13 +218,22 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
       return;
     }
     
+    if (!leadInfo.giveawayConsent) {
+      setModal({ show: true, message: '[필수] 경품 제공을 위한 마케팅 수신에 동의해주세요.' });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyuSvR5EayjraolRWXKkzHYJ8hJDU_Z128lq0RztnBBy8yU9fd5iJvFj-so1KBjc1L0g/exec';
+      
+      const payload = { ...leadInfo };
+      delete payload.giveawayConsent;
+
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors', 
-        body: JSON.stringify(leadInfo)
+        body: JSON.stringify(payload)
       });
       console.log('✅ 구글 스프레드시트에 저장 요청을 보냈습니다.');
     } catch (error) {
@@ -251,7 +259,7 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
               <div className="text-center mb-8">
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 break-keep">🏖️ 마케터 여름휴가 고민 월드컵</h1>
                 <p className="text-gray-600 break-keep text-sm sm:text-base">
-                  마케터들의 여름휴가 고민을 재미있게 풀어보세요! 😅<br />
+                  당신이 가장 싫어하는 여름 휴가철 업무는?! 😅<br />
                   결과 페이지를 보여주시면 휴가철 필수템도 증정!
                 </p>
               </div>
@@ -295,13 +303,27 @@ const LeadFormScreen = ({ onLeadSubmit }) => {
                     <option value="over_100m">1억원 이상</option>
                   </select>
                 </div>
-                <div className="pt-4">
+                <div className="pt-2 pb-2">
+                  <div className="flex items-center">
+                    <input
+                      id="giveawayConsent"
+                      name="giveawayConsent"
+                      type="checkbox"
+                      checked={leadInfo.giveawayConsent}
+                      onChange={(e) => handleInputChange('giveawayConsent', e.target.checked)}
+                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="giveawayConsent" className="ml-2 block text-sm text-gray-700">
+                      [필수] 경품 제공을 위한 마케팅 수신에 동의합니다
+                    </label>
+                  </div>
+                </div>
+                <div className="pt-2">
                   <button type="submit" disabled={isSubmitting} className={`w-full ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'} text-white py-3 px-4 rounded-lg font-semibold transition-colors`}>
                     {isSubmitting ? '월드컵 개최 중...' : '월드컵 시작하기! 🏆'}
                   </button>
                 </div>
               </form>
-              <p className="text-xs text-gray-500 text-center mt-4">* 입력하신 정보는 마케팅 솔루션 안내 목적으로만 사용됩니다.</p>
             </div>
           </div>
         </div>
@@ -359,10 +381,10 @@ const GameScreen = ({ tasks, onSelect }) => {
 
         <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8 items-center">
           {/* Task 1 Card */}
-          <div onClick={() => handleSelect(task1)} className="w-full bg-white rounded-xl shadow-lg px-6 pt-10 pb-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mb-4 md:mb-0">
+          <div onClick={() => handleSelect(task1)} className="w-full bg-white rounded-xl shadow-lg px-6 pt-6 pb-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mb-4 md:mb-0">
             <div className="text-center">
-              <div className="flex items-center justify-center mx-auto mb-8" style={{minHeight: '8.5rem'}}>
-                {task1.icon ? <LazyImage src={task1.icon} alt={`${task1.title} 아이콘`} className="w-48 h-auto object-contain" /> : <div className="w-48 h-full"/>}
+              <div className="flex items-center justify-center mx-auto mb-6" style={{minHeight: '9.5rem'}}>
+                {task1.icon ? <LazyImage src={task1.icon} alt={`${task1.title} 아이콘`} className="w-56 h-auto object-contain" /> : <div className="w-56 h-full"/>}
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line flex items-center justify-center min-h-[4rem]">{task1.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed break-keep">{task1.description}</p>
@@ -375,10 +397,10 @@ const GameScreen = ({ tasks, onSelect }) => {
           </div>
 
           {/* Task 2 Card */}
-          <div onClick={() => handleSelect(task2)} className="w-full bg-white rounded-xl shadow-lg px-6 pt-10 pb-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mt-4 md:mt-0">
+          <div onClick={() => handleSelect(task2)} className="w-full bg-white rounded-xl shadow-lg px-6 pt-6 pb-6 cursor-pointer hover:shadow-xl transition-all hover:scale-105 flex flex-col justify-between mt-4 md:mt-0">
             <div className="text-center">
-              <div className="flex items-center justify-center mx-auto mb-8" style={{minHeight: '8.5rem'}}>
-                {task2.icon ? <LazyImage src={task2.icon} alt={`${task2.title} 아이콘`} className="w-48 h-auto object-contain" /> : <div className="w-48 h-full"/>}
+              <div className="flex items-center justify-center mx-auto mb-6" style={{minHeight: '9.5rem'}}>
+                {task2.icon ? <LazyImage src={task2.icon} alt={`${task2.title} 아이콘`} className="w-56 h-auto object-contain" /> : <div className="w-56 h-full"/>}
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 break-keep text-center whitespace-pre-line flex items-center justify-center min-h-[4rem]">{task2.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed break-keep">{task2.description}</p>
@@ -408,7 +430,7 @@ const FinishedScreen = ({ winner, onReset }) => {
               <Trophy className="w-12 h-12 text-yellow-500" />
               <h1 className="text-2xl sm:text-3xl font-bold text-white break-keep">🏆 우승!</h1>
             </div>
-            <h2 className="text-lg sm:text-xl text-gray-200 mb-6 break-keep">마케터의 최대 고민이 무엇인지 확인해보세요!</h2>
+            <h2 className="text-lg sm:text-xl text-gray-200 mb-6 break-keep">당신의 최대 고민은?</h2>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg px-6 sm:px-8 pt-10 sm:pt-12 pb-6 sm:pb-8 text-center mb-8">
@@ -579,12 +601,20 @@ const FinishedScreen = ({ winner, onReset }) => {
 
           <div className="flex flex-col items-center gap-4 w-full">
             <a 
-              href="https://www.adriel.com" 
+              href="https://meetings.hubspot.com/kim-noah/2508mgs?utm_source=offline&utm_medium=event&utm_campaign=mgs2025&utm_content=marketingworldcup" 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors w-full max-w-xs text-center"
             >
               Adriel 무료 체험하기 →
+            </a>
+            <a 
+              href="https://www.adriel.com/ko?utm_source=offline&utm_medium=event&utm_campaign=mgs2025&utm_content=marketingworldcup" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white hover:bg-gray-100 text-blue-600 border border-blue-600 px-8 py-3 rounded-lg font-semibold transition-colors w-full max-w-xs text-center"
+            >
+              대시보드 둘러보기
             </a>
             <button
               onClick={onReset}
